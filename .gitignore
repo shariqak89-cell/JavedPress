@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.npm-cache/
+server.log
+server-error.log
+qa-*.png
+qa-*.jpg
+
