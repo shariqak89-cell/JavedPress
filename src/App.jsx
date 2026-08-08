@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrowserRouter, NavLink, Route, Routes, useLocation } from "react-router-dom";
 import {
   ArrowRight, BookOpen, CalendarBlank, Check, EnvelopeSimple, FacebookLogo,
@@ -37,6 +37,64 @@ const services = [
 function ScrollTop() {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, [pathname]);
+  return null;
+}
+
+function HoverSound() {
+  const audioRef = useRef(null);
+  const lastToneRef = useRef(0);
+
+  useEffect(() => {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+
+    const interactiveSelector = "a, button, input, select, textarea, .service-card, .gallery-grid button, .process-grid > div, .why-grid > div, .journey-grid article";
+
+    const playTone = (frequency, duration = 0.055, volume = 0.024) => {
+      const now = performance.now();
+      if (now - lastToneRef.current < 42) return;
+      lastToneRef.current = now;
+
+      const context = audioRef.current || new AudioContext();
+      audioRef.current = context;
+      if (context.state === "suspended") context.resume();
+
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(frequency, context.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(frequency * 1.18, context.currentTime + duration);
+      gain.gain.setValueAtTime(0.0001, context.currentTime);
+      gain.gain.exponentialRampToValueAtTime(volume, context.currentTime + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + duration);
+      oscillator.connect(gain);
+      gain.connect(context.destination);
+      oscillator.start();
+      oscillator.stop(context.currentTime + duration + 0.02);
+    };
+
+    const onPointerOver = (event) => {
+      const target = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
+      const related = event.relatedTarget instanceof Node ? event.relatedTarget : null;
+      if (!target || target === related || target.contains(related)) return;
+      playTone(540);
+    };
+
+    const onPointerDown = (event) => {
+      const target = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
+      if (!target) return;
+      playTone(320, 0.075, 0.032);
+    };
+
+    document.addEventListener("pointerover", onPointerOver, true);
+    document.addEventListener("pointerdown", onPointerDown, true);
+    return () => {
+      document.removeEventListener("pointerover", onPointerOver, true);
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      if (audioRef.current?.state !== "closed") audioRef.current?.close();
+    };
+  }, []);
+
   return null;
 }
 
@@ -239,7 +297,7 @@ function QuoteBand() {
 }
 
 function AppLayout() {
-  return <div><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
+  return <div><HoverSound/><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
 }
 
 export function App() { return <BrowserRouter basename={basePath}><AppLayout/></BrowserRouter>; }
