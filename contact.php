@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$to = 'digisparkxx@gmail.com';
+$to = 'javedpress@gmail.com';
 $subject = isset($_POST['_subject']) && trim((string) $_POST['_subject']) !== ''
     ? trim((string) $_POST['_subject'])
     : 'New website enquiry for Javed Press';
