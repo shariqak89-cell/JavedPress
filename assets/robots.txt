@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://javedpress.com/index.php?asset=sitemap.xml
