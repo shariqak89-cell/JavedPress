@@ -3,7 +3,7 @@ import { BrowserRouter, NavLink, Route, Routes, useLocation } from "react-router
 import {
   ArrowRight, BookOpen, CalendarBlank, Check, EnvelopeSimple, FacebookLogo,
   GlobeHemisphereWest, InstagramLogo, List, MapPin, Package, PaintBrush,
-  Microphone, PaperPlaneTilt, Phone, Printer, Quotes, ShoppingBag, Sparkle, SpeakerHigh, Storefront,
+  Microphone, PaperPlaneTilt, Phone, Printer, Quotes, ShoppingBag, Sparkle, Storefront,
   Student, X
 } from "@phosphor-icons/react";
 
@@ -478,7 +478,6 @@ function Chatbot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
-  const [speakingIndex, setSpeakingIndex] = useState(null);
   const [voiceStatus, setVoiceStatus] = useState("");
   const [messages, setMessages] = useState([
     { from: "bot", text: "Assalamualaikum! Javed Press ke baare mein kuch bhi poochiye." }
@@ -525,38 +524,6 @@ function Chatbot() {
     recognition.start();
   };
 
-  const speakMessage = (text, index) => {
-    if (!("speechSynthesis" in window)) {
-      setVoiceStatus("Speaker is browser mein supported nahin hai.");
-      return;
-    }
-    window.speechSynthesis.cancel();
-    const style = detectReplyStyle(text);
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = style === "english" ? "en-IN" : style === "urdu" ? "ur-PK" : "hi-IN";
-    utterance.rate = 0.88;
-    utterance.pitch = 0.82;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find((voice) => /male|ravi|google hindi|google हिन्दी|urdu|india/i.test(voice.name) && voice.lang.toLowerCase().startsWith(utterance.lang.slice(0, 2)))
-      || voices.find((voice) => voice.lang.toLowerCase().startsWith(utterance.lang.slice(0, 2)))
-      || voices.find((voice) => /male|ravi|david|mark|google/i.test(voice.name))
-      || voices[0];
-    if (preferred) utterance.voice = preferred;
-    utterance.onstart = () => {
-      setSpeakingIndex(index);
-      setVoiceStatus("Answer speaker par chal raha hai...");
-    };
-    utterance.onend = () => {
-      setSpeakingIndex(null);
-      setVoiceStatus("");
-    };
-    utterance.onerror = () => {
-      setSpeakingIndex(null);
-      setVoiceStatus("Speaker se answer play nahin ho paya. Dobara try karein.");
-    };
-    window.speechSynthesis.speak(utterance);
-  };
-
   return <div className={open ? "chatbot open" : "chatbot"}>
     {open && <section className="chatbot-panel" aria-label="Javed Press chatbot">
       <div className="chatbot-head">
@@ -566,7 +533,6 @@ function Chatbot() {
       <div className="chatbot-messages">
         {messages.map((message, index) => <div className={`chat-message ${message.from}`} key={`${message.from}-${index}`}>
           <p>{message.text}</p>
-          {message.from === "bot" && <button className={speakingIndex === index ? "speak speaking" : "speak"} type="button" aria-label="Listen to answer" onClick={() => speakMessage(message.text, index)}><SpeakerHigh/></button>}
         </div>)}
       </div>
       <form className="chatbot-form" onSubmit={sendMessage}>
