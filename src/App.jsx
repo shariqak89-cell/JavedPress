@@ -44,6 +44,25 @@ function ScrollTop() {
   return null;
 }
 
+function FaviconSync() {
+  useEffect(() => {
+    const setIcon = (rel, href, sizes) => {
+      let link = document.querySelector(`link[rel="${rel}"]`);
+      if (!link) {
+        link = document.createElement("link");
+        link.rel = rel;
+        document.head.appendChild(link);
+      }
+      link.href = href;
+      if (sizes) link.sizes = sizes;
+      link.type = "image/png";
+    };
+    setIcon("icon", `${A}favicon-64.png`, "64x64");
+    setIcon("apple-touch-icon", `${A}apple-touch-icon.png`);
+  }, []);
+  return null;
+}
+
 function HoverSound() {
   const audioRef = useRef(null);
   const lastToneRef = useRef(0);
@@ -424,7 +443,7 @@ function Chatbot() {
 }
 
 function AppLayout() {
-  return <div><HoverSound/><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><Chatbot/><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
+  return <div><FaviconSync/><HoverSound/><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><Chatbot/><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
 }
 
 export function App() { return <BrowserRouter basename={basePath}><AppLayout/></BrowserRouter>; }
