@@ -11,6 +11,9 @@ const basePath = import.meta.env.BASE_URL === "/" ? "" : import.meta.env.BASE_UR
 const A = `${import.meta.env.BASE_URL}assets/`;
 const contactEndpoint = `${basePath}/contact.php`;
 const whatsapp = "https://wa.me/919899284296?text=Hello%20Javed%20Press%2C%20I%20would%20like%20a%20printing%20quote.";
+const address = "2096 Rodgran Lal Kuan Delhi - 110006";
+const businessHours = "10:00 AM se 7:00 PM";
+const mapSrc = "https://www.google.com/maps?q=Javed%20Press%202096%20Rodgran%20Lal%20Kuan%20Hamdard%20Road%20Delhi%20110006&output=embed";
 
 const services = [
   ["Offset Printing", "High-volume, colour-accurate printing for premium commercial jobs.", "machine-offset.jpg", Printer],
@@ -49,7 +52,7 @@ function HoverSound() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
 
-    const interactiveSelector = "a, button, input, select, textarea, .service-card, .gallery-grid button, .process-grid > div, .why-grid > div, .journey-grid article";
+    const interactiveSelector = "a, button, input, select, textarea, .service-card, .gallery-grid button, .process-grid > div, .why-grid > div, .journey-grid article, .brand-card, .video-card, .location-card, .chatbot-launch";
 
     const playTone = (frequency, duration = 0.055, volume = 0.024) => {
       const now = performance.now();
@@ -103,7 +106,7 @@ function Header() {
   const [open, setOpen] = useState(false);
   const links = [["/", "Home"], ["/about", "About Us"], ["/services", "Services"], ["/gallery", "Gallery"], ["/contact", "Contact"]];
   return <>
-    <div className="topbar"><div className="shell topbar-inner"><span><MapPin size={15}/> 2096, Rodgran, Lal Kuan, Ansari Road, Delhi – 110006</span><span><EnvelopeSimple size={15}/> javedpress@gmail.com</span></div></div>
+    <div className="topbar"><div className="shell topbar-inner"><span><MapPin size={15}/> {address}</span><span><EnvelopeSimple size={15}/> javedpress@gmail.com</span></div></div>
     <header className="header">
       <div className="shell nav-wrap">
         <NavLink to="/" className="logo-link" aria-label="Javed Press home"><img src={`${A}javed-press-logo.png`} alt="Javed Press"/></NavLink>
@@ -126,8 +129,8 @@ function Footer() {
     <div className="shell footer-grid">
       <div className="footer-brand"><img src={`${A}javed-press-logo.png`} alt="Javed Press"/><p>Quality printing, thoughtful design and practical digital solutions from the heart of Old Delhi.</p></div>
       <div><h3>Explore</h3><NavLink to="/about">Our story</NavLink><NavLink to="/services">All services</NavLink><NavLink to="/gallery">Work gallery</NavLink><NavLink to="/contact">Request a quote</NavLink></div>
-      <div><h3>Contact</h3><a href="tel:+919899284296">+91 98992 84296</a><a href="mailto:javedpress@gmail.com">javedpress@gmail.com</a><p>2096, Rodgran, Lal Kuan,<br/>Ansari Road, Delhi – 110006</p></div>
-      <div><h3>Working Hours</h3><p>Monday–Saturday<br/>10:00 AM–7:30 PM</p><div className="socials"><a href="https://www.instagram.com/javedpress?igsh=MWpidmhlNnNyY3hlZg==" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramLogo/></a><a href="https://www.facebook.com/mohdjaved.javed.9" target="_blank" rel="noreferrer" aria-label="Facebook"><FacebookLogo/></a></div></div>
+      <div><h3>Contact</h3><a href="tel:+918700838758">+91 87008 38758</a><a href="tel:+919899284296">+91 98992 84296</a><a href="mailto:javedpress@gmail.com">javedpress@gmail.com</a><p>{address}</p></div>
+      <div><h3>Working Hours</h3><p>Monday-Saturday<br/>{businessHours}</p><div className="socials"><a href="https://www.instagram.com/javedpress?igsh=MWpidmhlNnNyY3hlZg==" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramLogo/></a><a href="https://www.facebook.com/mohdjaved.javed.9" target="_blank" rel="noreferrer" aria-label="Facebook"><FacebookLogo/></a></div></div>
     </div>
     <div className="copyright"><div className="shell copyright-inner"><span>© {new Date().getFullYear()} Javed Press. Crafted for print, packaging and digital.</span><span className="creator-credit">Created by Shariqa</span></div></div>
   </footer>;
@@ -141,6 +144,64 @@ function TrustStrip() {
   return <div className="trust-strip"><div className="shell trust-grid">
     {["Professional experience", "Print-to-digital expertise", "Quality checked", "On-time support"].map((x) => <div key={x}><Check weight="bold"/><span>{x}</span></div>)}
   </div></div>;
+}
+
+function BrandShowcase() {
+  return <section className="section brand-showcase">
+    <div className="shell brand-showcase-grid">
+      <article className="brand-card logo-card">
+        <span className="eyebrow pink">Javed Press identity</span>
+        <img src={`${A}javed-press-logo.png`} alt="Javed Press transparent logo"/>
+        <p>Print Quality. Digital Brilliance. Future Ready.</p>
+      </article>
+      <article className="brand-card contact-card">
+        <img src={`${A}javedpress-contact-card.jpg`} alt="Javed Press phone, website and email card"/>
+      </article>
+      <article className="brand-card poster-card">
+        <img src={`${A}javedpress-poster.jpg`} alt="Javed Press services poster"/>
+      </article>
+    </div>
+  </section>;
+}
+
+function VideoShowcase() {
+  const videos = [
+    ["Print floor in motion", "javedpress-video-1.mp4"],
+    ["Design and production", "javedpress-video-2.mp4"],
+    ["Javed Press showcase", "javedpress-video-3.mp4"],
+  ];
+  return <section className="section video-showcase">
+    <div className="shell">
+      <div className="section-head">
+        <div><span className="eyebrow pink">Watch the work</span><h2>Printing, design and digital craft in motion.</h2><p>Play, pause and resume each video whenever you like.</p></div>
+      </div>
+      <div className="video-grid">
+        {videos.map(([title, file]) => <article className="video-card" key={file}>
+          <video controls playsInline preload="metadata" poster={`${A}javedpress-poster.jpg`}>
+            <source src={`${A}${file}`} type="video/mp4"/>
+          </video>
+          <h3>{title}</h3>
+        </article>)}
+      </div>
+    </div>
+  </section>;
+}
+
+function LocationShowcase() {
+  return <section className="section location-showcase">
+    <div className="shell location-grid">
+      <div className="location-copy">
+        <span className="eyebrow yellow">Visit Javed Press</span>
+        <h2>Find us inside Rodgran, Lal Kuan.</h2>
+        <p>{address}</p>
+        <p>Near Hamdard Road / Rodgran lane area, inside Lal Kuan. The map is set to the Javed Press address so visitors can navigate directly.</p>
+        <div className="location-pills"><span>{businessHours}</span><span>Call: 87008 38758</span><span>WhatsApp: 98992 84296</span></div>
+      </div>
+      <div className="location-card">
+        <iframe title="Javed Press Lal Kuan map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={mapSrc}/>
+      </div>
+    </div>
+  </section>;
 }
 
 function ServiceGrid({ limit }) {
@@ -165,9 +226,12 @@ function Home() {
       </div>
     </section>
     <TrustStrip/>
+    <BrandShowcase/>
     <section className="section services-home"><div className="shell"><div className="section-head"><div><span className="eyebrow pink">Our services</span><h2>Complete print & digital solutions</h2><p>Everything your business needs, under one roof.</p></div><NavLink className="text-link" to="/services">View all 20 services <ArrowRight/></NavLink></div><ServiceGrid limit={8}/></div></section>
+    <VideoShowcase/>
     <section className="section story-band"><div className="shell story-grid"><div className="story-image"><img src={`${A}machine-offset.jpg`} alt="Javed Press printing production floor"/></div><div><span className="eyebrow">Built one job at a time</span><h2>From a small shop to a full creative partner.</h2><p>Javed Press began with a simple commitment: treat every print job with care. Today that same practical spirit connects printing, packaging, graphic design, websites and e-commerce under one roof.</p><p>We also share real professional knowledge with students at no fee, helping them understand how actual client work moves from brief to finished result.</p><NavLink className="button dark" to="/about">Read our story <ArrowRight/></NavLink></div></div></section>
     <section className="section process"><div className="shell"><div className="section-head centered"><div><span className="eyebrow pink">How it works</span><h2>Clear from brief to delivery</h2></div></div><div className="process-grid">{[["01","Tell us what you need"],["02","Approve design & estimate"],["03","We print and quality-check"],["04","Collect or receive delivery"]].map(([n,t])=><div key={n}><b>{n}</b><h3>{t}</h3></div>)}</div></div></section>
+    <LocationShowcase/>
     <QuoteBand/>
   </>;
 }
@@ -290,15 +354,77 @@ function ContactForm({ compact=false }) {
 }
 
 function Contact() {
-  return <><PageHero eyebrow="Request a quote" title="Tell us what you want to create." text="Share the product, quantity, finish and deadline. We’ll help shape the rest."/><section className="section"><div className="shell contact-grid"><div><span className="eyebrow pink">Project details</span><h2>A better estimate starts with a clear brief.</h2><ContactForm/></div><aside className="contact-aside"><div><Phone/><h3>Call or WhatsApp</h3><a href="tel:+919899284296">+91 98992 84296</a></div><div><EnvelopeSimple/><h3>Email</h3><a href="mailto:javedpress@gmail.com">javedpress@gmail.com</a></div><div><MapPin/><h3>Visit the press</h3><p>Javed Press<br/>2096, Rodgran, Lal Kuan,<br/>Ansari Road, Delhi – 110006</p></div><iframe title="Javed Press location map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=2096%20Rodgran%20Lal%20Kuan%20Ansari%20Road%20Delhi%20110006&output=embed"/></aside></div></section></>;
+  return <><PageHero eyebrow="Request a quote" title="Tell us what you want to create." text="Share the product, quantity, finish and deadline. We’ll help shape the rest."/><section className="section"><div className="shell contact-grid"><div><span className="eyebrow pink">Project details</span><h2>A better estimate starts with a clear brief.</h2><ContactForm/></div><aside className="contact-aside"><div><Phone/><h3>Call or WhatsApp</h3><a href="tel:+918700838758">+91 87008 38758</a><a href="tel:+919899284296">+91 98992 84296</a></div><div><EnvelopeSimple/><h3>Email</h3><a href="mailto:javedpress@gmail.com">javedpress@gmail.com</a></div><div><MapPin/><h3>Visit the press</h3><p>Javed Press<br/>{address}</p></div><div><h3>Working Hours</h3><p>{businessHours}</p></div><iframe title="Javed Press location map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={mapSrc}/></aside></div></section></>;
 }
 
 function QuoteBand() {
   return <section className="quote-band"><div className="shell quote-grid"><div><Quotes/><span className="eyebrow yellow">Have a project in mind?</span><h2>Let’s make something worth holding onto.</h2><p>Send the details now or speak directly with our team.</p><div className="hero-actions"><NavLink className="button light" to="/contact">Start your enquiry <ArrowRight/></NavLink><a className="button ghost" href={whatsapp} target="_blank" rel="noreferrer">WhatsApp us</a></div></div><ContactForm compact/></div></section>;
 }
 
+function getBotAnswer(rawQuestion) {
+  const question = rawQuestion.toLowerCase();
+  if (question.includes("address") || question.includes("location") || question.includes("map") || question.includes("kahan") || question.includes("kahaan")) {
+    return `Javed Press ka address hai: ${address}. Lal Kuan / Rodgran area ke liye map website par Contact section mein laga hai.`;
+  }
+  if (question.includes("time") || question.includes("timing") || question.includes("open") || question.includes("band") || question.includes("hours")) {
+    return `Working timing: ${businessHours}, Monday-Saturday. Aane se pehle call/WhatsApp karna best rahega.`;
+  }
+  if (question.includes("phone") || question.includes("number") || question.includes("call") || question.includes("whatsapp")) {
+    return "Call: +91 87008 38758. WhatsApp: +91 98992 84296. Aap quote ke liye WhatsApp button bhi use kar sakte hain.";
+  }
+  if (question.includes("email") || question.includes("mail")) {
+    return "Email: javedpress@gmail.com. Contact form submit karne par enquiry isi email par jaati hai.";
+  }
+  if (question.includes("service") || question.includes("printing") || question.includes("design") || question.includes("website") || question.includes("packaging")) {
+    return "Javed Press printing, packaging, business cards, brochures, books, wedding cards, stickers, banners, catalogues, graphic design, websites, e-commerce aur social media creatives ka kaam karta hai.";
+  }
+  if (question.includes("quote") || question.includes("rate") || question.includes("price") || question.includes("cost")) {
+    return "Quote ke liye product, quantity, paper/size, finishing aur deadline bhej dein. Contact page ka form ya WhatsApp dono use kar sakte hain.";
+  }
+  if (question.includes("delivery") || question.includes("urgent") || question.includes("fast")) {
+    return "Fast turnaround available hai. Exact delivery job type, quantity aur finishing par depend karti hai. Details bhej kar quick estimate le sakte hain.";
+  }
+  return "Main Javed Press website assistant hoon. Aap address, timing, services, quote, phone, email, map ya printing/design work ke baare mein pooch sakte hain.";
+}
+
+function Chatbot() {
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([
+    { from: "bot", text: "Assalamualaikum! Javed Press ke baare mein kuch bhi poochiye." }
+  ]);
+
+  const sendMessage = (event) => {
+    event.preventDefault();
+    const text = input.trim();
+    if (!text) return;
+    setMessages((current) => [...current, { from: "user", text }, { from: "bot", text: getBotAnswer(text) }]);
+    setInput("");
+  };
+
+  return <div className={open ? "chatbot open" : "chatbot"}>
+    {open && <section className="chatbot-panel" aria-label="Javed Press chatbot">
+      <div className="chatbot-head">
+        <div><b>Javed Press Assistant</b><span>Website ke hisaab se instant jawab</span></div>
+        <button type="button" aria-label="Close chatbot" onClick={() => setOpen(false)}><X/></button>
+      </div>
+      <div className="chatbot-messages">
+        {messages.map((message, index) => <p className={message.from} key={`${message.from}-${index}`}>{message.text}</p>)}
+      </div>
+      <form className="chatbot-form" onSubmit={sendMessage}>
+        <input value={input} onChange={(event) => setInput(event.target.value)} placeholder="Address, timing, services..." />
+        <button type="submit" aria-label="Send message"><PaperPlaneTilt/></button>
+      </form>
+    </section>}
+    <button className="chatbot-launch" type="button" onClick={() => setOpen(!open)} aria-label="Open Javed Press chatbot">
+      <img src={`${A}javed-chatbot-mascot.png`} alt="Javed Press chatbot assistant"/>
+      <span>Ask me</span>
+    </button>
+  </div>;
+}
+
 function AppLayout() {
-  return <div><HoverSound/><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
+  return <div><HoverSound/><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><Chatbot/><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
 }
 
 export function App() { return <BrowserRouter basename={basePath}><AppLayout/></BrowserRouter>; }
