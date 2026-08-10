@@ -3,7 +3,7 @@ import { BrowserRouter, NavLink, Route, Routes, useLocation } from "react-router
 import {
   ArrowRight, BookOpen, CalendarBlank, Check, EnvelopeSimple, FacebookLogo,
   GlobeHemisphereWest, InstagramLogo, List, MapPin, Package, PaintBrush,
-  PaperPlaneTilt, Phone, Printer, Quotes, ShoppingBag, Sparkle, Storefront,
+  Microphone, PaperPlaneTilt, Phone, Printer, Quotes, ShoppingBag, Sparkle, Storefront,
   Student, X
 } from "@phosphor-icons/react";
 
@@ -371,66 +371,174 @@ function IntroSplash() {
   return <div className="intro-splash" aria-label="Javed Press opening animation">
     <div className="intro-stage">
       <img className="intro-logo" src={`${A}javed-press-logo.png`} alt="Javed Press"/>
-      <img className="intro-mascot" src={`${A}javed-intro-mascot-hello.png`} alt="Javed Press founder character"/>
+      <img className="intro-mascot" src={`${A}javed-intro-mascot-desk.png`} alt="Javed Press founder character at design table"/>
       <div className="intro-flash"/>
     </div>
   </div>;
 }
 
+const websiteFacts = {
+  name: "Javed Press",
+  domain: "javedpress.com",
+  creator: "Shariqa",
+  founder: "Mohd. Javed",
+  nextGeneration: "Junaid Khan",
+  started: "1989",
+  address,
+  hours: businessHours,
+  days: "Monday-Saturday",
+  email: "javedpress@gmail.com",
+  call: "+91 87008 38758",
+  whatsapp: "+91 98992 84296",
+  services: services.map(([name]) => name).join(", "),
+};
+
+function detectReplyStyle(text) {
+  if (/[\u0600-\u06FF]/.test(text)) return "urdu";
+  if (/[\u0900-\u097F]/.test(text)) return "hindi";
+  if (/\b(kisne|banayi|banaya|kaun|kahan|kahaan|kya|batao|puch|pooch|timing|kitna|address|number|mail|website|service|kaam)\b/i.test(text)) return "hinglish";
+  return "english";
+}
+
+function formatAnswer(style, key) {
+  const answers = {
+    creator: {
+      english: `This website was created by ${websiteFacts.creator}.`,
+      hinglish: `Ye website ${websiteFacts.creator} ne banayi hai.`,
+      hindi: `यह वेबसाइट ${websiteFacts.creator} ने बनाई है।`,
+      urdu: `یہ ویب سائٹ ${websiteFacts.creator} نے بنائی ہے۔`,
+    },
+    address: {
+      english: `Javed Press is at ${websiteFacts.address}. The map on the website is set to the Rodgran, Lal Kuan, Delhi location.`,
+      hinglish: `Javed Press ka address hai: ${websiteFacts.address}. Website ka map Rodgran, Lal Kuan, Delhi wali location par set hai.`,
+      hindi: `Javed Press का पता है: ${websiteFacts.address}. वेबसाइट में map इसी Rodgran, Lal Kuan, Delhi location पर लगा है।`,
+      urdu: `Javed Press کا پتہ ہے: ${websiteFacts.address}. ویب سائٹ کا map Rodgran, Lal Kuan, Delhi location پر لگا ہے۔`,
+    },
+    hours: {
+      english: `Working hours are ${websiteFacts.days}, ${websiteFacts.hours}. It is best to call or WhatsApp before visiting.`,
+      hinglish: `Timing ${websiteFacts.days}, ${websiteFacts.hours} hai. Aane se pehle call ya WhatsApp karna best rahega.`,
+      hindi: `समय ${websiteFacts.days}, ${websiteFacts.hours} है। आने से पहले call या WhatsApp कर लेना बेहतर रहेगा।`,
+      urdu: `Timing ${websiteFacts.days}, ${websiteFacts.hours} ہے۔ آنے سے پہلے call یا WhatsApp کرنا بہتر رہے گا۔`,
+    },
+    contact: {
+      english: `Call ${websiteFacts.call}, WhatsApp ${websiteFacts.whatsapp}, or email ${websiteFacts.email}.`,
+      hinglish: `Call: ${websiteFacts.call}. WhatsApp: ${websiteFacts.whatsapp}. Email: ${websiteFacts.email}.`,
+      hindi: `Call: ${websiteFacts.call}. WhatsApp: ${websiteFacts.whatsapp}. Email: ${websiteFacts.email}.`,
+      urdu: `Call: ${websiteFacts.call}. WhatsApp: ${websiteFacts.whatsapp}. Email: ${websiteFacts.email}.`,
+    },
+    services: {
+      english: `Javed Press offers ${websiteFacts.services}. It covers print, packaging, design, web, e-commerce and social media creative work.`,
+      hinglish: `Javed Press ye services karta hai: ${websiteFacts.services}. Yahan printing, packaging, design, website, e-commerce aur social media creatives ka kaam hota hai.`,
+      hindi: `Javed Press ये services करता है: ${websiteFacts.services}. यहाँ printing, packaging, design, website, e-commerce और social media creatives का काम होता है।`,
+      urdu: `Javed Press یہ services کرتا ہے: ${websiteFacts.services}. یہاں printing, packaging, design, website, e-commerce اور social media creatives کا کام ہوتا ہے۔`,
+    },
+    quote: {
+      english: "For a quote, share product type, quantity, paper or size, finishing and deadline through the contact form or WhatsApp.",
+      hinglish: "Quote ke liye product type, quantity, paper/size, finishing aur deadline bhej dein. Contact form ya WhatsApp dono use kar sakte hain.",
+      hindi: "Quote के लिए product type, quantity, paper/size, finishing और deadline भेज दें। Contact form या WhatsApp दोनों use कर सकते हैं।",
+      urdu: "Quote کے لیے product type, quantity, paper/size, finishing اور deadline بھیج دیں۔ Contact form یا WhatsApp دونوں use کر سکتے ہیں۔",
+    },
+    founder: {
+      english: `${websiteFacts.founder} founded Javed Press in ${websiteFacts.started}. ${websiteFacts.nextGeneration} is carrying the next generation forward.`,
+      hinglish: `${websiteFacts.founder} ne Javed Press ko ${websiteFacts.started} mein start kiya tha. ${websiteFacts.nextGeneration} next generation ke roop mein kaam seekh aur aage badha rahe hain.`,
+      hindi: `${websiteFacts.founder} ने Javed Press को ${websiteFacts.started} में शुरू किया था। ${websiteFacts.nextGeneration} next generation के रूप में काम आगे बढ़ा रहे हैं।`,
+      urdu: `${websiteFacts.founder} نے Javed Press کو ${websiteFacts.started} میں شروع کیا تھا۔ ${websiteFacts.nextGeneration} next generation کے طور پر کام آگے بڑھا رہے ہیں۔`,
+    },
+    training: {
+      english: "Javed Press also mentors students and aspiring designers/developers with practical industry guidance at no cost.",
+      hinglish: "Javed Press students, designers aur developers ko practical industry guidance free mein deta hai.",
+      hindi: "Javed Press students, designers और developers को practical industry guidance free में देता है।",
+      urdu: "Javed Press students, designers اور developers کو practical industry guidance free میں دیتا ہے۔",
+    },
+    fallback: {
+      english: `I can answer about Javed Press services, address, timing, contact, quote, founder, website creator, map, delivery and design/printing work. This site is ${websiteFacts.domain}.`,
+      hinglish: `Main Javed Press website ke baare mein answer de sakta hoon: services, address, timing, contact, quote, founder, website kisne banayi, map, delivery aur printing/design work. Website: ${websiteFacts.domain}.`,
+      hindi: `मैं Javed Press website के बारे में answer दे सकता हूँ: services, address, timing, contact, quote, founder, website किसने बनाई, map, delivery और printing/design work. Website: ${websiteFacts.domain}.`,
+      urdu: `میں Javed Press website کے بارے میں answer دے سکتا ہوں: services, address, timing, contact, quote, founder, website کس نے بنائی، map, delivery اور printing/design work. Website: ${websiteFacts.domain}.`,
+    },
+  };
+  return answers[key][style] || answers[key].english;
+}
+
 function getBotAnswer(rawQuestion) {
   const question = rawQuestion.toLowerCase();
-  if (question.includes("address") || question.includes("location") || question.includes("map") || question.includes("kahan") || question.includes("kahaan")) {
-    return `Javed Press ka address hai: ${address}. Lal Kuan / Rodgran area ke liye map website par Contact section mein laga hai.`;
-  }
-  if (question.includes("time") || question.includes("timing") || question.includes("open") || question.includes("band") || question.includes("hours")) {
-    return `Working timing: ${businessHours}, Monday-Saturday. Aane se pehle call/WhatsApp karna best rahega.`;
-  }
-  if (question.includes("phone") || question.includes("number") || question.includes("call") || question.includes("whatsapp")) {
-    return "Call: +91 87008 38758. WhatsApp: +91 98992 84296. Aap quote ke liye WhatsApp button bhi use kar sakte hain.";
-  }
-  if (question.includes("email") || question.includes("mail")) {
-    return "Email: javedpress@gmail.com. Contact form submit karne par enquiry isi email par jaati hai.";
-  }
-  if (question.includes("service") || question.includes("printing") || question.includes("design") || question.includes("website") || question.includes("packaging")) {
-    return "Javed Press printing, packaging, business cards, brochures, book printing, binding, notebooks, bill books, wedding cards, stickers, posters, flex, banners, catalogues, graphic design, websites, e-commerce aur social media creatives ka kaam karta hai.";
-  }
-  if (question.includes("quote") || question.includes("rate") || question.includes("price") || question.includes("cost")) {
-    return "Quote ke liye product, quantity, paper/size, finishing aur deadline bhej dein. Contact page ka form ya WhatsApp dono use kar sakte hain.";
-  }
-  if (question.includes("delivery") || question.includes("urgent") || question.includes("fast")) {
-    return "Fast turnaround available hai. Exact delivery job type, quantity aur finishing par depend karti hai. Details bhej kar quick estimate le sakte hain.";
-  }
-  return "Main Javed Press website assistant hoon. Aap address, timing, services, quote, phone, email, map ya printing/design work ke baare mein pooch sakte hain.";
+  const style = detectReplyStyle(rawQuestion);
+  if (question.includes("kisne") || question.includes("banayi") || question.includes("banaya") || question.includes("created") || question.includes("creator") || question.includes("developer") || question.includes("designer") || question.includes("किसने") || question.includes("بنائی")) return formatAnswer(style, "creator");
+  if (question.includes("address") || question.includes("location") || question.includes("map") || question.includes("kahan") || question.includes("kahaan") || question.includes("पता") || question.includes("کہاں")) return formatAnswer(style, "address");
+  if (question.includes("time") || question.includes("timing") || question.includes("open") || question.includes("band") || question.includes("hours") || question.includes("समय") || question.includes("وقت")) return formatAnswer(style, "hours");
+  if (question.includes("phone") || question.includes("number") || question.includes("call") || question.includes("whatsapp") || question.includes("email") || question.includes("mail") || question.includes("contact") || question.includes("नंबर") || question.includes("رابط")) return formatAnswer(style, "contact");
+  if (question.includes("service") || question.includes("printing") || question.includes("design") || question.includes("website") || question.includes("packaging") || question.includes("book") || question.includes("card") || question.includes("banner") || question.includes("poster") || question.includes("काम") || question.includes("سروس")) return formatAnswer(style, "services");
+  if (question.includes("quote") || question.includes("rate") || question.includes("price") || question.includes("cost") || question.includes("estimate") || question.includes("kitna") || question.includes("कीमत") || question.includes("قیمت")) return formatAnswer(style, "quote");
+  if (question.includes("founder") || question.includes("owner") || question.includes("javed") || question.includes("junaid") || question.includes("founded") || question.includes("start") || question.includes("शुरू") || question.includes("مالک")) return formatAnswer(style, "founder");
+  if (question.includes("student") || question.includes("training") || question.includes("mentor") || question.includes("learn") || question.includes("सीख") || question.includes("تعلیم")) return formatAnswer(style, "training");
+  return formatAnswer(style, "fallback");
 }
 
 function Chatbot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [listening, setListening] = useState(false);
+  const [voiceStatus, setVoiceStatus] = useState("");
   const [messages, setMessages] = useState([
     { from: "bot", text: "Assalamualaikum! Javed Press ke baare mein kuch bhi poochiye." }
   ]);
+
+  const addQuestion = (text) => {
+    setMessages((current) => [...current, { from: "user", text }, { from: "bot", text: getBotAnswer(text) }]);
+  };
 
   const sendMessage = (event) => {
     event.preventDefault();
     const text = input.trim();
     if (!text) return;
-    setMessages((current) => [...current, { from: "user", text }, { from: "bot", text: getBotAnswer(text) }]);
+    addQuestion(text);
     setInput("");
+  };
+
+  const startVoice = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setVoiceStatus("Mic is browser mein supported nahin hai. Please Chrome use karein.");
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = "hi-IN";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.onstart = () => {
+      setListening(true);
+      setVoiceStatus("Listening...");
+    };
+    recognition.onerror = () => {
+      setListening(false);
+      setVoiceStatus("Mic se awaaz clear nahin mili. Dobara try karein.");
+    };
+    recognition.onend = () => setListening(false);
+    recognition.onresult = (event) => {
+      const text = event.results?.[0]?.[0]?.transcript?.trim();
+      if (!text) return;
+      setInput("");
+      setVoiceStatus("");
+      addQuestion(text);
+    };
+    recognition.start();
   };
 
   return <div className={open ? "chatbot open" : "chatbot"}>
     {open && <section className="chatbot-panel" aria-label="Javed Press chatbot">
       <div className="chatbot-head">
-        <div><b>Javed Press Assistant</b></div>
+        <div><b>Javed Press Assistant</b><span>Type ya mic se poochiye</span></div>
         <button type="button" aria-label="Close chatbot" onClick={() => setOpen(false)}><X/></button>
       </div>
       <div className="chatbot-messages">
         {messages.map((message, index) => <p className={message.from} key={`${message.from}-${index}`}>{message.text}</p>)}
       </div>
       <form className="chatbot-form" onSubmit={sendMessage}>
-        <input value={input} onChange={(event) => setInput(event.target.value)} placeholder="Address, timing, services..." />
+        <input value={input} onChange={(event) => setInput(event.target.value)} placeholder="Address, timing, website creator..." />
+        <button className={listening ? "mic listening" : "mic"} type="button" aria-label="Ask with microphone" onClick={startVoice}><Microphone/></button>
         <button type="submit" aria-label="Send message"><PaperPlaneTilt/></button>
       </form>
+      {voiceStatus && <p className="chatbot-status">{voiceStatus}</p>}
     </section>}
     <button className="chatbot-launch" type="button" onClick={() => setOpen(!open)} aria-label="Open Javed Press chatbot">
       <img src={`${A}javed-chatbot-mascot.png`} alt="Javed Press chatbot assistant"/>
