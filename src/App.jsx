@@ -12,8 +12,8 @@ const A = `${import.meta.env.BASE_URL}assets/`;
 const contactEndpoint = `${basePath}/contact.php`;
 const whatsapp = "https://wa.me/919899284296?text=Hello%20Javed%20Press%2C%20I%20would%20like%20a%20printing%20quote.";
 const address = "2096 Rodgran Lal Kuan Delhi - 110006";
-const businessHours = "10:00 AM se 7:00 PM";
-const mapSrc = "https://www.google.com/maps?q=Javed%20Press%202096%20Rodgran%20Lal%20Kuan%20Hamdard%20Road%20Delhi%20110006&output=embed";
+const businessHours = "10:00 AM - 7:00 PM";
+const mapSrc = "https://www.google.com/maps?q=2096%20Rodgran%20Lal%20Kuan%20Delhi%20110006&output=embed";
 
 const services = [
   ["Offset Printing", "High-volume, colour-accurate printing for premium commercial jobs.", "machine-offset.jpg", Printer],
@@ -165,24 +165,6 @@ function TrustStrip() {
   </div></div>;
 }
 
-function BrandShowcase() {
-  return <section className="section brand-showcase">
-    <div className="shell brand-showcase-grid">
-      <article className="brand-card logo-card">
-        <span className="eyebrow pink">Javed Press identity</span>
-        <img src={`${A}javed-press-logo.png`} alt="Javed Press transparent logo"/>
-        <p>Print Quality. Digital Brilliance. Future Ready.</p>
-      </article>
-      <article className="brand-card contact-card">
-        <img src={`${A}javedpress-contact-card.jpg`} alt="Javed Press phone, website and email card"/>
-      </article>
-      <article className="brand-card poster-card">
-        <img src={`${A}javedpress-poster.jpg`} alt="Javed Press services poster"/>
-      </article>
-    </div>
-  </section>;
-}
-
 function VideoShowcase() {
   const videos = [
     ["Print floor in motion", "javedpress-video-1.mp4"],
@@ -196,7 +178,7 @@ function VideoShowcase() {
       </div>
       <div className="video-grid">
         {videos.map(([title, file]) => <article className="video-card" key={file}>
-          <video controls playsInline preload="metadata" poster={`${A}javedpress-poster.jpg`}>
+          <video controls playsInline preload="metadata" poster={`${A}machine-digital.jpg`}>
             <source src={`${A}${file}`} type="video/mp4"/>
           </video>
           <h3>{title}</h3>
@@ -213,7 +195,6 @@ function LocationShowcase() {
         <span className="eyebrow yellow">Visit Javed Press</span>
         <h2>Find us inside Rodgran, Lal Kuan.</h2>
         <p>{address}</p>
-        <p>Near Hamdard Road / Rodgran lane area, inside Lal Kuan. The map is set to the Javed Press address so visitors can navigate directly.</p>
         <div className="location-pills"><span>{businessHours}</span><span>Call: 87008 38758</span><span>WhatsApp: 98992 84296</span></div>
       </div>
       <div className="location-card">
@@ -245,7 +226,6 @@ function Home() {
       </div>
     </section>
     <TrustStrip/>
-    <BrandShowcase/>
     <section className="section services-home"><div className="shell"><div className="section-head"><div><span className="eyebrow pink">Our services</span><h2>Complete print & digital solutions</h2><p>Everything your business needs, under one roof.</p></div><NavLink className="text-link" to="/services">View all 20 services <ArrowRight/></NavLink></div><ServiceGrid limit={8}/></div></section>
     <VideoShowcase/>
     <section className="section story-band"><div className="shell story-grid"><div className="story-image"><img src={`${A}machine-offset.jpg`} alt="Javed Press printing production floor"/></div><div><span className="eyebrow">Built one job at a time</span><h2>From a small shop to a full creative partner.</h2><p>Javed Press began with a simple commitment: treat every print job with care. Today that same practical spirit connects printing, packaging, graphic design, websites and e-commerce under one roof.</p><p>We also share real professional knowledge with students at no fee, helping them understand how actual client work moves from brief to finished result.</p><NavLink className="button dark" to="/about">Read our story <ArrowRight/></NavLink></div></div></section>
@@ -380,6 +360,25 @@ function QuoteBand() {
   return <section className="quote-band"><div className="shell quote-grid"><div><Quotes/><span className="eyebrow yellow">Have a project in mind?</span><h2>Let’s make something worth holding onto.</h2><p>Send the details now or speak directly with our team.</p><div className="hero-actions"><NavLink className="button light" to="/contact">Start your enquiry <ArrowRight/></NavLink><a className="button ghost" href={whatsapp} target="_blank" rel="noreferrer">WhatsApp us</a></div></div><ContactForm compact/></div></section>;
 }
 
+function IntroSplash() {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    if (!visible) return;
+    const timer = setTimeout(() => setVisible(false), 3900);
+    return () => clearTimeout(timer);
+  }, [visible]);
+
+  if (!visible) return null;
+  return <div className="intro-splash" aria-label="Javed Press opening animation">
+    <div className="intro-stage">
+      <img className="intro-logo" src={`${A}javed-press-logo.png`} alt="Javed Press"/>
+      <img className="intro-mascot" src={`${A}javed-chatbot-mascot.png`} alt="Javed Press founder character"/>
+      <div className="intro-flash"/>
+    </div>
+  </div>;
+}
+
 function getBotAnswer(rawQuestion) {
   const question = rawQuestion.toLowerCase();
   if (question.includes("address") || question.includes("location") || question.includes("map") || question.includes("kahan") || question.includes("kahaan")) {
@@ -424,7 +423,7 @@ function Chatbot() {
   return <div className={open ? "chatbot open" : "chatbot"}>
     {open && <section className="chatbot-panel" aria-label="Javed Press chatbot">
       <div className="chatbot-head">
-        <div><b>Javed Press Assistant</b><span>Website ke hisaab se instant jawab</span></div>
+        <div><b>Javed Press Assistant</b></div>
         <button type="button" aria-label="Close chatbot" onClick={() => setOpen(false)}><X/></button>
       </div>
       <div className="chatbot-messages">
@@ -443,7 +442,7 @@ function Chatbot() {
 }
 
 function AppLayout() {
-  return <div><FaviconSync/><HoverSound/><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><Chatbot/><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
+  return <div><FaviconSync/><IntroSplash/><HoverSound/><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><Chatbot/><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
 }
 
 export function App() { return <BrowserRouter basename={basePath}><AppLayout/></BrowserRouter>; }
