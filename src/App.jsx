@@ -71,7 +71,7 @@ function HoverSound() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
 
-    const interactiveSelector = "a, button, input, select, textarea, .service-card, .gallery-grid button, .process-grid > div, .why-grid > div, .journey-grid article, .brand-card, .video-card, .location-card, .chatbot-launch";
+    const interactiveSelector = "a, button, input, select, textarea, .service-card, .gallery-grid button, .process-grid > div, .why-grid > div, .journey-grid article, .video-card, .location-card, .chatbot-launch";
 
     const playTone = (frequency, duration = 0.055, volume = 0.024) => {
       const now = performance.now();
@@ -207,8 +207,8 @@ function LocationShowcase() {
 function ServiceGrid({ limit }) {
   const list = limit ? services.slice(0, limit) : services;
   return <div className="service-grid">{list.map(([name, desc, image, Icon], i) => <article className="service-card reveal" key={name} style={{"--delay": `${(i%4)*70}ms`}}>
-    <div className="service-image"><img src={`${A}${image}`} alt={`${name} by Javed Press`} loading="lazy"/></div>
-    <div className="service-copy"><Icon size={23}/><h3>{name}</h3><p>{desc}</p><NavLink to="/contact">Ask for a quote <ArrowRight/></NavLink></div>
+    <div className="service-image"><img src={`${A}${image}`} alt={`${name} by Javed Press`} loading="lazy"/><span>{String(i + 1).padStart(2, "0")}</span></div>
+    <div className="service-copy"><div className="service-icon"><Icon size={22}/></div><h3>{name}</h3><p>{desc}</p><NavLink to="/contact">Ask for a quote <ArrowRight/></NavLink></div>
   </article>)}</div>;
 }
 
@@ -226,7 +226,7 @@ function Home() {
       </div>
     </section>
     <TrustStrip/>
-    <section className="section services-home"><div className="shell"><div className="section-head"><div><span className="eyebrow pink">Our services</span><h2>Complete print & digital solutions</h2><p>Everything your business needs, under one roof.</p></div><NavLink className="text-link" to="/services">View all 20 services <ArrowRight/></NavLink></div><ServiceGrid limit={8}/></div></section>
+    <section className="section services-home"><div className="shell"><div className="section-head"><div><span className="eyebrow pink">Our services</span><h2>Complete print & digital solutions</h2><p>Everything your business needs, under one roof.</p></div><NavLink className="text-link" to="/services">View all <ArrowRight/></NavLink></div><ServiceGrid limit={8}/></div></section>
     <VideoShowcase/>
     <section className="section story-band"><div className="shell story-grid"><div className="story-image"><img src={`${A}machine-offset.jpg`} alt="Javed Press printing production floor"/></div><div><span className="eyebrow">Built one job at a time</span><h2>From a small shop to a full creative partner.</h2><p>Javed Press began with a simple commitment: treat every print job with care. Today that same practical spirit connects printing, packaging, graphic design, websites and e-commerce under one roof.</p><p>We also share real professional knowledge with students at no fee, helping them understand how actual client work moves from brief to finished result.</p><NavLink className="button dark" to="/about">Read our story <ArrowRight/></NavLink></div></div></section>
     <section className="section process"><div className="shell"><div className="section-head centered"><div><span className="eyebrow pink">How it works</span><h2>Clear from brief to delivery</h2></div></div><div className="process-grid">{[["01","Tell us what you need"],["02","Approve design & estimate"],["03","We print and quality-check"],["04","Collect or receive delivery"]].map(([n,t])=><div key={n}><b>{n}</b><h3>{t}</h3></div>)}</div></div></section>
@@ -330,7 +330,7 @@ function AboutRich() {
 }
 
 function Services() {
-  return <><PageHero eyebrow="20 services. One dependable team." title="From the press floor to the browser." text="Explore printing, packaging, design and digital services tailored to real business needs."/><section className="section"><div className="shell"><ServiceGrid/></div></section><QuoteBand/></>;
+  return <><PageHero eyebrow="Services. One dependable team." title="From the press floor to the browser." text="Explore printing, packaging, design and digital services tailored to real business needs."/><section className="section"><div className="shell"><ServiceGrid/></div></section><QuoteBand/></>;
 }
 
 function Gallery() {
@@ -373,7 +373,7 @@ function IntroSplash() {
   return <div className="intro-splash" aria-label="Javed Press opening animation">
     <div className="intro-stage">
       <img className="intro-logo" src={`${A}javed-press-logo.png`} alt="Javed Press"/>
-      <img className="intro-mascot" src={`${A}javed-chatbot-mascot.png`} alt="Javed Press founder character"/>
+      <img className="intro-mascot" src={`${A}javed-intro-mascot-sitting.png`} alt="Javed Press founder character"/>
       <div className="intro-flash"/>
     </div>
   </div>;
