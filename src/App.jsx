@@ -13,7 +13,7 @@ const contactEndpoint = `${basePath}/contact.php`;
 const whatsapp = "https://wa.me/919899284296?text=Hello%20Javed%20Press%2C%20I%20would%20like%20a%20printing%20quote.";
 const address = "2096 Rodgran Lal Kuan Delhi - 110006";
 const businessHours = "10:00 AM - 7:00 PM";
-const mapSrc = "https://www.google.com/maps?q=2096%20Rodgran%20Lal%20Kuan%20Delhi%20110006&output=embed";
+const mapSrc = "https://www.google.com/maps?q=2096%20Rodgran%2C%20Lal%20Kuan%2C%20Delhi%20110006&z=17&output=embed";
 
 const services = [
   ["Offset Printing", "High-volume, colour-accurate printing for premium commercial jobs.", "machine-offset.jpg", Printer],
@@ -22,9 +22,13 @@ const services = [
   ["Business Cards", "Foil, textured, laminated and edge-finished visiting cards.", "service-business-cards.png", Sparkle],
   ["Brochures & Flyers", "Crisp promotional literature in every practical size and fold.", "service-brochures.png", PaperPlaneTilt],
   ["Books & Magazines", "Publishing-quality printing, binding and finishing for every run.", "service-books.png", BookOpen],
+  ["Book Printing & Binding", "Sharp book interiors, strong covers and neat binding for every edition.", "service-book-binding.png", BookOpen],
+  ["Notebook & Diary Printing", "Custom notebooks, planners, diaries and writing pads for brands and offices.", "service-notebooks-diaries.png", CalendarBlank],
+  ["Bill Books & NCR Pads", "Invoice books, receipt pads, challans and carbonless business forms.", "service-bill-books.png", PaperPlaneTilt],
   ["Wedding Invitations", "Elegant invitation suites with foil, embossing and fine papers.", "service-wedding.png", EnvelopeSimple],
   ["Stickers & Labels", "Roll labels, sheets, die-cuts and durable product stickers.", "service-stickers.png", Sparkle],
   ["Banners & Signage", "Indoor displays, event graphics and large-format signage.", "service-banners.png", Storefront],
+  ["Poster & Flex Printing", "Bold posters, flex banners, vinyl graphics and display prints.", "service-posters-flex.png", Storefront],
   ["Calendars & Diaries", "Corporate calendars, planners and premium bound diaries.", "service-calendars.png", CalendarBlank],
   ["Catalogues", "Beautifully structured product catalogues that make selling easier.", "service-catalogues.png", BookOpen],
   ["Menu Cards", "Durable restaurant menus in booklet, folded and table formats.", "service-menu-cards.png", BookOpen],
@@ -71,7 +75,7 @@ function HoverSound() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
 
-    const interactiveSelector = "a, button, input, select, textarea, .service-card, .gallery-grid button, .process-grid > div, .why-grid > div, .journey-grid article, .video-card, .location-card, .chatbot-launch";
+    const interactiveSelector = "a, button, input, select, textarea, .service-card, .process-grid > div, .why-grid > div, .journey-grid article, .video-card, .location-card, .chatbot-launch";
 
     const playTone = (frequency, duration = 0.055, volume = 0.024) => {
       const now = performance.now();
@@ -123,7 +127,7 @@ function HoverSound() {
 
 function Header() {
   const [open, setOpen] = useState(false);
-  const links = [["/", "Home"], ["/about", "About Us"], ["/services", "Services"], ["/gallery", "Gallery"], ["/contact", "Contact"]];
+  const links = [["/", "Home"], ["/about", "About Us"], ["/services", "Services"], ["/contact", "Contact"]];
   return <>
     <div className="topbar"><div className="shell topbar-inner"><span><MapPin size={15}/> {address}</span><span><EnvelopeSimple size={15}/> javedpress@gmail.com</span></div></div>
     <header className="header">
@@ -147,7 +151,7 @@ function Footer() {
   return <footer>
     <div className="shell footer-grid">
       <div className="footer-brand"><img src={`${A}javed-press-logo.png`} alt="Javed Press"/><p>Quality printing, thoughtful design and practical digital solutions from the heart of Old Delhi.</p></div>
-      <div><h3>Explore</h3><NavLink to="/about">Our story</NavLink><NavLink to="/services">All services</NavLink><NavLink to="/gallery">Work gallery</NavLink><NavLink to="/contact">Request a quote</NavLink></div>
+      <div><h3>Explore</h3><NavLink to="/about">Our story</NavLink><NavLink to="/services">All services</NavLink><NavLink to="/contact">Request a quote</NavLink></div>
       <div><h3>Contact</h3><a href="tel:+918700838758">+91 87008 38758</a><a href="tel:+919899284296">+91 98992 84296</a><a href="mailto:javedpress@gmail.com">javedpress@gmail.com</a><p>{address}</p></div>
       <div><h3>Working Hours</h3><p>Monday-Saturday<br/>{businessHours}</p><div className="socials"><a href="https://www.instagram.com/javedpress?igsh=MWpidmhlNnNyY3hlZg==" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramLogo/></a><a href="https://www.facebook.com/mohdjaved.javed.9" target="_blank" rel="noreferrer" aria-label="Facebook"><FacebookLogo/></a></div></div>
     </div>
@@ -167,9 +171,9 @@ function TrustStrip() {
 
 function VideoShowcase() {
   const videos = [
-    ["Print floor in motion", "javedpress-video-1.mp4"],
-    ["Design and production", "javedpress-video-2.mp4"],
-    ["Javed Press showcase", "javedpress-video-3.mp4"],
+    ["Print floor in motion", "javedpress-video-1.mp4", "video-thumb-print-floor.jpg"],
+    ["Design and production", "javedpress-video-2.mp4", "video-thumb-design-production.jpg"],
+    ["Javed Press showcase", "javedpress-video-3.mp4", "video-thumb-showcase.jpg"],
   ];
   return <section className="section video-showcase">
     <div className="shell">
@@ -177,8 +181,8 @@ function VideoShowcase() {
         <div><span className="eyebrow pink">Watch the work</span><h2>Printing, design and digital craft in motion.</h2><p>Play, pause and resume each video whenever you like.</p></div>
       </div>
       <div className="video-grid">
-        {videos.map(([title, file]) => <article className="video-card" key={file}>
-          <video controls playsInline preload="metadata" poster={`${A}machine-digital.jpg`}>
+        {videos.map(([title, file, poster]) => <article className="video-card" key={file}>
+          <video controls playsInline preload="metadata" poster={`${A}${poster}`}>
             <source src={`${A}${file}`} type="video/mp4"/>
           </video>
           <h3>{title}</h3>
@@ -333,12 +337,6 @@ function Services() {
   return <><PageHero eyebrow="Services. One dependable team." title="From the press floor to the browser." text="Explore printing, packaging, design and digital services tailored to real business needs."/><section className="section"><div className="shell"><ServiceGrid/></div></section><QuoteBand/></>;
 }
 
-function Gallery() {
-  const [selected, setSelected] = useState(null);
-  const gallery = services.map(s => [s[0], s[2]]);
-  return <><PageHero eyebrow="Selected work" title="Details you can see. Quality you can feel." text="A closer look at the machines, papers, finishes and digital craft behind our work."/><section className="section"><div className="shell gallery-grid">{gallery.map(([name,img])=><button onClick={()=>setSelected([name,img])} key={name}><img src={`${A}${img}`} alt={name} loading="lazy"/><span>{name}</span></button>)}</div></section>{selected&&<div className="lightbox" role="dialog" aria-modal="true" onClick={()=>setSelected(null)}><button aria-label="Close"><X/></button><img src={`${A}${selected[1]}`} alt={selected[0]}/><p>{selected[0]}</p></div>}</>;
-}
-
 function ContactForm({ compact=false }) {
   return <form className={compact ? "quote-form compact" : "quote-form"} action={contactEndpoint} method="POST" encType="multipart/form-data">
     <input type="hidden" name="_subject" value="New website enquiry for Javed Press"/>
@@ -373,7 +371,7 @@ function IntroSplash() {
   return <div className="intro-splash" aria-label="Javed Press opening animation">
     <div className="intro-stage">
       <img className="intro-logo" src={`${A}javed-press-logo.png`} alt="Javed Press"/>
-      <img className="intro-mascot" src={`${A}javed-intro-mascot-sitting.png`} alt="Javed Press founder character"/>
+      <img className="intro-mascot" src={`${A}javed-intro-mascot-hello.png`} alt="Javed Press founder character"/>
       <div className="intro-flash"/>
     </div>
   </div>;
@@ -394,7 +392,7 @@ function getBotAnswer(rawQuestion) {
     return "Email: javedpress@gmail.com. Contact form submit karne par enquiry isi email par jaati hai.";
   }
   if (question.includes("service") || question.includes("printing") || question.includes("design") || question.includes("website") || question.includes("packaging")) {
-    return "Javed Press printing, packaging, business cards, brochures, books, wedding cards, stickers, banners, catalogues, graphic design, websites, e-commerce aur social media creatives ka kaam karta hai.";
+    return "Javed Press printing, packaging, business cards, brochures, book printing, binding, notebooks, bill books, wedding cards, stickers, posters, flex, banners, catalogues, graphic design, websites, e-commerce aur social media creatives ka kaam karta hai.";
   }
   if (question.includes("quote") || question.includes("rate") || question.includes("price") || question.includes("cost")) {
     return "Quote ke liye product, quantity, paper/size, finishing aur deadline bhej dein. Contact page ka form ya WhatsApp dono use kar sakte hain.";
@@ -442,7 +440,7 @@ function Chatbot() {
 }
 
 function AppLayout() {
-  return <div><FaviconSync/><IntroSplash/><HoverSound/><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/gallery" element={<Gallery/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><Chatbot/><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
+  return <div><FaviconSync/><IntroSplash/><HoverSound/><ScrollTop/><Header/><main><Routes><Route path="/" element={<Home/>}/><Route path="/about" element={<AboutRich/>}/><Route path="/services" element={<Services/>}/><Route path="/contact" element={<Contact/>}/><Route path="*" element={<Home/>}/></Routes></main><Chatbot/><a className="whatsapp-float" href={whatsapp} target="_blank" rel="noreferrer" aria-label="Chat with Javed Press on WhatsApp"><Phone weight="fill"/></a><Footer/></div>;
 }
 
 export function App() { return <BrowserRouter basename={basePath}><AppLayout/></BrowserRouter>; }
