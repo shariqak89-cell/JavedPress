@@ -457,6 +457,18 @@ function formatAnswer(style, key) {
       hindi: "Javed Press students, designers और developers को practical industry guidance free में देता है।",
       urdu: "Javed Press students, designers اور developers کو practical industry guidance free میں دیتا ہے۔",
     },
+    delivery: {
+      english: "Javed Press supports collection from the press and delivery coordination. Share your deadline in the enquiry form so the team can confirm the schedule.",
+      hinglish: "Javed Press se collection aur delivery coordination dono ho sakte hain. Enquiry form mein deadline bhej dein, team schedule confirm kar degi.",
+      hindi: "Javed Press से collection और delivery coordination दोनों हो सकते हैं। Enquiry form में deadline भेज दें, team schedule confirm कर देगी।",
+      urdu: "Javed Press سے collection اور delivery coordination دونوں ہو سکتے ہیں۔ Enquiry form میں deadline بھیج دیں، team schedule confirm کر دے گی۔",
+    },
+    greeting: {
+      english: "Hello! I can help with Javed Press services, pricing enquiries, address, timings, contact details and the website creator.",
+      hinglish: "Namaste! Main Javed Press ki services, quote, address, timing, contact details aur website creator ke baare mein bata sakta hoon.",
+      hindi: "नमस्ते! मैं Javed Press की services, quote, address, timing, contact details और website creator के बारे में बता सकता हूँ।",
+      urdu: "السلام علیکم! میں Javed Press کی services، quote، address، timing، contact details اور website creator کے بارے میں بتا سکتا ہوں۔",
+    },
     fallback: {
       english: `I can answer about Javed Press services, address, timing, contact, quote, founder, website creator, map, delivery and design/printing work. This site is ${websiteFacts.domain}.`,
       hinglish: `Main Javed Press website ke baare mein answer de sakta hoon: services, address, timing, contact, quote, founder, website kisne banayi, map, delivery aur printing/design work. Website: ${websiteFacts.domain}.`,
@@ -468,16 +480,19 @@ function formatAnswer(style, key) {
 }
 
 function getBotAnswer(rawQuestion) {
-  const question = rawQuestion.toLowerCase();
+  const question = rawQuestion.toLowerCase().replace(/[?!.,;:]+/g, " ").replace(/\s+/g, " ").trim();
   const style = detectReplyStyle(rawQuestion);
-  if (question.includes("kisne") || question.includes("banayi") || question.includes("banaya") || question.includes("created") || question.includes("creator") || question.includes("developer") || question.includes("designer") || question.includes("किसने") || question.includes("بنائی")) return formatAnswer(style, "creator");
-  if (question.includes("address") || question.includes("location") || question.includes("map") || question.includes("kahan") || question.includes("kahaan") || question.includes("पता") || question.includes("کہاں")) return formatAnswer(style, "address");
-  if (question.includes("time") || question.includes("timing") || question.includes("open") || question.includes("band") || question.includes("hours") || question.includes("समय") || question.includes("وقت")) return formatAnswer(style, "hours");
-  if (question.includes("phone") || question.includes("number") || question.includes("call") || question.includes("whatsapp") || question.includes("email") || question.includes("mail") || question.includes("contact") || question.includes("नंबर") || question.includes("رابط")) return formatAnswer(style, "contact");
-  if (question.includes("service") || question.includes("printing") || question.includes("design") || question.includes("website") || question.includes("packaging") || question.includes("book") || question.includes("card") || question.includes("banner") || question.includes("poster") || question.includes("काम") || question.includes("سروس")) return formatAnswer(style, "services");
-  if (question.includes("quote") || question.includes("rate") || question.includes("price") || question.includes("cost") || question.includes("estimate") || question.includes("kitna") || question.includes("कीमत") || question.includes("قیمت")) return formatAnswer(style, "quote");
-  if (question.includes("founder") || question.includes("owner") || question.includes("javed") || question.includes("junaid") || question.includes("founded") || question.includes("start") || question.includes("शुरू") || question.includes("مالک")) return formatAnswer(style, "founder");
-  if (question.includes("student") || question.includes("training") || question.includes("mentor") || question.includes("learn") || question.includes("सीख") || question.includes("تعلیم")) return formatAnswer(style, "training");
+  const has = (...terms) => terms.some((term) => question.includes(term));
+  if (has("hello", "hi", "hey", "namaste", "salam", "assalam", "नमस्ते", "سلام")) return formatAnswer(style, "greeting");
+  if (has("kisne", "banayi", "banaya", "created", "creator", "developer", "designer", "किसने", "بنائی")) return formatAnswer(style, "creator");
+  if (has("address", "location", "map", "kahan", "kahaan", "pata", "पता", "کہاں")) return formatAnswer(style, "address");
+  if (has("time", "timing", "open", "band", "hours", "kab khul", "समय", "وقت")) return formatAnswer(style, "hours");
+  if (has("phone", "number", "call", "whatsapp", "email", "mail", "contact", "नंबर", "رابط")) return formatAnswer(style, "contact");
+  if (has("quote", "rate", "price", "cost", "estimate", "kitna", "कीमत", "قیمت")) return formatAnswer(style, "quote");
+  if (has("deliver", "delivery", "collect", "pickup", "deadline", "डिलीवरी")) return formatAnswer(style, "delivery");
+  if (has("founder", "owner", "javed", "junaid", "founded", "start", "शुरू", "مالک")) return formatAnswer(style, "founder");
+  if (has("student", "training", "mentor", "learn", "सीख", "تعلیم")) return formatAnswer(style, "training");
+  if (has("service", "printing", "design", "website", "packaging", "book", "card", "banner", "poster", "काम", "سروس")) return formatAnswer(style, "services");
   return formatAnswer(style, "fallback");
 }
 
@@ -543,7 +558,7 @@ function Chatbot() {
         </div>)}
       </div>
       <form className="chatbot-form" onSubmit={sendMessage}>
-        <input value={input} onChange={(event) => setInput(event.target.value)} placeholder="Address, timing, website creator..." />
+        <input aria-label="Ask Javed Press Assistant" autoComplete="off" value={input} onChange={(event) => setInput(event.target.value)} placeholder="Address, timing, website creator..." />
         <button className={listening ? "mic listening" : "mic"} type="button" aria-label="Ask with microphone" onClick={startVoice}><Microphone/></button>
         <button type="submit" aria-label="Send message"><PaperPlaneTilt/></button>
       </form>
