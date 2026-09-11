@@ -11,11 +11,15 @@ const basePath = import.meta.env.BASE_URL === "/" ? "" : import.meta.env.BASE_UR
 const wpSettings = typeof window !== "undefined" ? (window.JAVEDPRESS_SETTINGS || {}) : {};
 const A = wpSettings.asset_base || `${import.meta.env.BASE_URL}assets/`;
 const contactEndpoint = wpSettings.contact_endpoint || `${basePath}/contact.php`;
-const whatsapp = "https://wa.me/919899284296?text=Hello%20Javed%20Press%2C%20I%20would%20like%20a%20printing%20quote.";
 const address = wpSettings.address || "2096 Rodgran Lal Kuan Delhi - 110006";
 const businessHours = wpSettings.business_hours || "10:00 AM - 7:00 PM";
 const contactEmail = wpSettings.email || "javedpress@gmail.com";
 const creatorCredit = wpSettings.creator_credit || "Created by Shariqa";
+const phoneNumber = wpSettings.phone || "+91 87008 38758";
+const whatsappNumber = wpSettings.whatsapp || "+91 98992 84296";
+const whatsapp = `https://wa.me/${whatsappNumber.replace(/\D/g, "")}?text=Hello%20Javed%20Press%2C%20I%20would%20like%20a%20printing%20quote.`;
+const heroEyebrow = wpSettings.hero_eyebrow || "Delhi's print & digital partner";
+const heroDescription = wpSettings.hero_description || "From offset and digital printing to packaging, graphic design and e-commerce solutions—we help ideas look sharp, communicate clearly and grow.";
 const mapSrc = "https://www.google.com/maps?q=2096%20Rodgran%2C%20Lal%20Kuan%2C%20Delhi%20110006&z=17&output=embed";
 
 const services = [
@@ -224,9 +228,9 @@ function Home() {
     <section className="hero">
       <div className="shell hero-grid">
         <div className="hero-copy">
-          <div className="cmyk-line"/><span className="eyebrow">Delhi's print & digital partner</span>
+          <div className="cmyk-line"/><span className="eyebrow">{heroEyebrow}</span>
           <h1>Premium printing.<br/>Powerful digital solutions.<br/><em>All in Delhi.</em></h1>
-          <p>From offset and digital printing to packaging, graphic design and e-commerce solutions—we help ideas look sharp, communicate clearly and grow.</p>
+          <p>{heroDescription}</p>
           <div className="hero-actions"><a className="button green" href={whatsapp} target="_blank" rel="noreferrer">Get a Quote on WhatsApp <ArrowRight/></a><a className="button outline" href="tel:+919899284296"><Phone/> Call now</a></div>
         </div>
         <div className="hero-media"><img src={`${A}machine-digital.jpg`} alt="Javed Press digital printing machine"/><div className="image-note"><span>Print</span><span>Packaging</span><span>Digital</span></div></div>
@@ -391,8 +395,8 @@ const websiteFacts = {
   hours: businessHours,
   days: "Monday-Saturday",
   email: "javedpress@gmail.com",
-  call: "+91 87008 38758",
-  whatsapp: "+91 98992 84296",
+  call: phoneNumber,
+  whatsapp: whatsappNumber,
   services: services.map(([name]) => name).join(", "),
 };
 

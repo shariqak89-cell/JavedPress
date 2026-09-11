@@ -14,6 +14,10 @@ function javedpress_defaults() {
         'business_hours' => '10:00 AM - 7:00 PM',
         'email' => 'javedpress@gmail.com',
         'creator_credit' => 'Created by Shariqa',
+        'phone' => '+91 87008 38758',
+        'whatsapp' => '+91 98992 84296',
+        'hero_eyebrow' => "Delhi's print & digital partner",
+        'hero_description' => 'From offset and digital printing to packaging, graphic design and e-commerce solutions—we help ideas look sharp, communicate clearly and grow.',
     );
 }
 
@@ -21,15 +25,19 @@ function javedpress_customizer($wp_customize) {
     $wp_customize->add_section('javedpress_details', array('title' => 'Javed Press Details', 'priority' => 30));
     foreach (javedpress_defaults() as $key => $default) {
         $label = ucwords(str_replace('_', ' ', $key));
-        $wp_customize->add_setting('javedpress_' . $key, array('default' => $default, 'sanitize_callback' => 'sanitize_text_field'));
-        $wp_customize->add_control('javedpress_' . $key, array('section' => 'javedpress_details', 'label' => $label, 'type' => 'text'));
+        $is_multiline = $key === 'hero_description';
+        $sanitize = $is_multiline ? 'sanitize_textarea_field' : 'sanitize_text_field';
+        $wp_customize->add_setting('javedpress_' . $key, array('default' => $default, 'sanitize_callback' => $sanitize));
+        $wp_customize->add_control('javedpress_' . $key, array('section' => 'javedpress_details', 'label' => $label, 'type' => $is_multiline ? 'textarea' : 'text'));
     }
 }
 add_action('customize_register', 'javedpress_customizer');
 
 function javedpress_asset($pattern) {
     $matches = glob(get_template_directory() . '/assets/' . $pattern);
-    return $matches ? basename($matches[0]) : '';
+    if (!$matches) return '';
+    usort($matches, function($a, $b) { return filemtime($b) <=> filemtime($a); });
+    return basename($matches[0]);
 }
 
 function javedpress_enqueue() {
@@ -45,6 +53,10 @@ function javedpress_enqueue() {
             'business_hours' => get_theme_mod('javedpress_business_hours', $defaults['business_hours']),
             'email' => get_theme_mod('javedpress_email', $defaults['email']),
             'creator_credit' => get_theme_mod('javedpress_creator_credit', $defaults['creator_credit']),
+            'phone' => get_theme_mod('javedpress_phone', $defaults['phone']),
+            'whatsapp' => get_theme_mod('javedpress_whatsapp', $defaults['whatsapp']),
+            'hero_eyebrow' => get_theme_mod('javedpress_hero_eyebrow', $defaults['hero_eyebrow']),
+            'hero_description' => get_theme_mod('javedpress_hero_description', $defaults['hero_description']),
             'asset_base' => trailingslashit(get_template_directory_uri() . '/assets'),
             'contact_endpoint' => admin_url('admin-post.php?action=javedpress_contact'),
         );
