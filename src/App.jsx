@@ -8,11 +8,14 @@ import {
 } from "@phosphor-icons/react";
 
 const basePath = import.meta.env.BASE_URL === "/" ? "" : import.meta.env.BASE_URL.replace(/\/$/, "");
-const A = `${import.meta.env.BASE_URL}assets/`;
-const contactEndpoint = `${basePath}/contact.php`;
+const wpSettings = typeof window !== "undefined" ? (window.JAVEDPRESS_SETTINGS || {}) : {};
+const A = wpSettings.asset_base || `${import.meta.env.BASE_URL}assets/`;
+const contactEndpoint = wpSettings.contact_endpoint || `${basePath}/contact.php`;
 const whatsapp = "https://wa.me/919899284296?text=Hello%20Javed%20Press%2C%20I%20would%20like%20a%20printing%20quote.";
-const address = "2096 Rodgran Lal Kuan Delhi - 110006";
-const businessHours = "10:00 AM - 7:00 PM";
+const address = wpSettings.address || "2096 Rodgran Lal Kuan Delhi - 110006";
+const businessHours = wpSettings.business_hours || "10:00 AM - 7:00 PM";
+const contactEmail = wpSettings.email || "javedpress@gmail.com";
+const creatorCredit = wpSettings.creator_credit || "Created by Shariqa";
 const mapSrc = "https://www.google.com/maps?q=2096%20Rodgran%2C%20Lal%20Kuan%2C%20Delhi%20110006&z=17&output=embed";
 
 const services = [
@@ -129,7 +132,7 @@ function Header() {
   const [open, setOpen] = useState(false);
   const links = [["/", "Home"], ["/about", "About Us"], ["/services", "Services"], ["/contact", "Contact"]];
   return <>
-    <div className="topbar"><div className="shell topbar-inner"><span><MapPin size={15}/> {address}</span><span><EnvelopeSimple size={15}/> javedpress@gmail.com</span></div></div>
+      <div className="topbar"><div className="shell topbar-inner"><span><MapPin size={15}/> {address}</span><span><EnvelopeSimple size={15}/> {contactEmail}</span></div></div>
     <header className="header">
       <div className="shell nav-wrap">
         <NavLink to="/" className="logo-link" aria-label="Javed Press home"><img src={`${A}javed-press-logo.png`} alt="Javed Press"/></NavLink>
@@ -152,10 +155,10 @@ function Footer() {
     <div className="shell footer-grid">
       <div className="footer-brand"><img src={`${A}javed-press-logo.png`} alt="Javed Press"/><p>Quality printing, thoughtful design and practical digital solutions from the heart of Old Delhi.</p></div>
       <div><h3>Explore</h3><NavLink to="/about">Our story</NavLink><NavLink to="/services">All services</NavLink><NavLink to="/contact">Request a quote</NavLink></div>
-      <div><h3>Contact</h3><a href="tel:+918700838758">+91 87008 38758</a><a href="tel:+919899284296">+91 98992 84296</a><a href="mailto:javedpress@gmail.com">javedpress@gmail.com</a><p>{address}</p></div>
+      <div><h3>Contact</h3><a href="tel:+918700838758">+91 87008 38758</a><a href="tel:+919899284296">+91 98992 84296</a><a href={`mailto:${contactEmail}`}>{contactEmail}</a><p>{address}</p></div>
       <div><h3>Working Hours</h3><p>Monday-Saturday<br/>{businessHours}</p><div className="socials"><a href="https://www.instagram.com/javedpress?igsh=MWpidmhlNnNyY3hlZg==" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramLogo/></a><a href="https://www.facebook.com/mohdjaved.javed.9" target="_blank" rel="noreferrer" aria-label="Facebook"><FacebookLogo/></a></div></div>
     </div>
-    <div className="copyright"><div className="shell copyright-inner"><span>© {new Date().getFullYear()} Javed Press. Crafted for print, packaging and digital.</span><span className="creator-credit">Created by Shariqa</span></div></div>
+    <div className="copyright"><div className="shell copyright-inner"><span>© {new Date().getFullYear()} Javed Press. Crafted for print, packaging and digital.</span><span className="creator-credit">{creatorCredit}</span></div></div>
   </footer>;
 }
 
@@ -346,12 +349,12 @@ function ContactForm({ compact=false }) {
     <label>What do you need?<select name="Service" required defaultValue=""><option value="" disabled>Select a service</option>{services.map(s=><option key={s[0]}>{s[0]}</option>)}</select></label>
     {!compact&&<><label>Quantity<input type="number" name="Quantity" min="1" placeholder="e.g. 500"/></label><label>Paper / size<input name="Paper and size" placeholder="e.g. A4, 300 GSM"/></label><label>Finishing<select name="Finishing"><option>Not sure — please advise</option><option>Matte lamination</option><option>Gloss lamination</option><option>Foil / embossing</option><option>Spot UV</option><option>Binding</option></select></label><label>Required by<input type="date" name="Deadline"/></label><label className="full">Project details<textarea name="Project details" required placeholder="Tell us what you want printed, designed or built…"/></label><label className="full file">Attach artwork or reference<input type="file" name="attachment" accept=".pdf,.jpg,.jpeg,.png,.ai,.psd,.doc,.docx"/></label></>}
     <button className="button dark full" type="submit">Send enquiry <PaperPlaneTilt/></button>
-    <p className="form-note full">Your enquiry will be emailed securely to javedpress@gmail.com.</p>
+    <p className="form-note full">Your enquiry will be emailed securely to {contactEmail}.</p>
   </form>;
 }
 
 function Contact() {
-  return <><PageHero eyebrow="Request a quote" title="Tell us what you want to create." text="Share the product, quantity, finish and deadline. We’ll help shape the rest."/><section className="section"><div className="shell contact-grid"><div><span className="eyebrow pink">Project details</span><h2>A better estimate starts with a clear brief.</h2><ContactForm/></div><aside className="contact-aside"><div><Phone/><h3>Call or WhatsApp</h3><a href="tel:+918700838758">+91 87008 38758</a><a href="tel:+919899284296">+91 98992 84296</a></div><div><EnvelopeSimple/><h3>Email</h3><a href="mailto:javedpress@gmail.com">javedpress@gmail.com</a></div><div><MapPin/><h3>Visit the press</h3><p>Javed Press<br/>{address}</p></div><div><h3>Working Hours</h3><p>{businessHours}</p></div><iframe title="Javed Press location map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={mapSrc}/></aside></div></section></>;
+  return <><PageHero eyebrow="Request a quote" title="Tell us what you want to create." text="Share the product, quantity, finish and deadline. We’ll help shape the rest."/><section className="section"><div className="shell contact-grid"><div><span className="eyebrow pink">Project details</span><h2>A better estimate starts with a clear brief.</h2><ContactForm/></div><aside className="contact-aside"><div><Phone/><h3>Call or WhatsApp</h3><a href="tel:+918700838758">+91 87008 38758</a><a href="tel:+919899284296">+91 98992 84296</a></div><div><EnvelopeSimple/><h3>Email</h3><a href={`mailto:${contactEmail}`}>{contactEmail}</a></div><div><MapPin/><h3>Visit the press</h3><p>Javed Press<br/>{address}</p></div><div><h3>Working Hours</h3><p>{businessHours}</p></div><iframe title="Javed Press location map" loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={mapSrc}/></aside></div></section></>;
 }
 
 function QuoteBand() {
