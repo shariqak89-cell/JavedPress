@@ -60,7 +60,7 @@ function javedpress_enqueue() {
             'asset_base' => trailingslashit(get_template_directory_uri() . '/assets'),
             'contact_endpoint' => admin_url('admin-post.php?action=javedpress_contact'),
         );
-        wp_add_inline_script('javedpress-app', 'window.JAVEDPRESS_SETTINGS = ' . wp_json_encode($settings) . ';', 'before');
+        wp_localize_script('javedpress-app', 'JAVEDPRESS_SETTINGS', $settings);
     }
 }
 add_action('wp_enqueue_scripts', 'javedpress_enqueue');
